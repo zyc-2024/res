@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>抽！奖！</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Microsoft YaHei", 微软雅黑, sans-serif;
+            }
+
+            body {
+                background-color: #f0f7ff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 20px;
+                min-height: 100vh;
+            }
+
+            .container {
+                max-width: 1800px;
+                width: 100%;
+                text-align: center;
+            }
+
+            h1 {
+                color: #2c5282;
+                margin-bottom: 30px;
+                font-size: 2.2rem;
+            }
+
+            /* 点名结果大屏展示区 */
+            .name-box {
+                width: 100%;
+                height: 600px;
+                line-height: 160px;
+                background: linear-gradient(135deg, #ffffff, #edf2f7);
+                border-radius: 20px;
+                box-shadow: 0 8px 24px rgba(44, 82, 130, 0.15);
+                margin-bottom: 30px;
+                font-size: 24rem;
+                font-weight: bold;
+                color: #2b6cb0;
+                border: 2px solid #bee3f8;
+                overflow: hidden;
+                user-select: none;
+            }
+
+            /* 名单编辑区 */
+            .textarea-box {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            textarea {
+                width: 100%;
+                height: 160px;
+                padding: 15px;
+                border-radius: 12px;
+                border: 2px solid #bee3f8;
+                outline: none;
+                resize: none;
+                font-size: 1rem;
+                color: #2d3748;
+                background-color: #fff;
+                line-height: 1.6;
+            }
+
+            textarea:focus {
+                border-color: #2b6cb0;
+                box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+            }
+
+            /* 按钮样式组 */
+            .btn-group {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-bottom: 15px;
+            }
+
+            button {
+                padding: 12px 24px;
+                border-radius: 24px;
+                border: none;
+                font-size: 3rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            button:hover {
+                transform: translateY(-2px);
+            }
+
+            button:active {
+                transform: translateY(0);
+            }
+
+            #startBtn {
+                background-color: #3182ce;
+                color: #fff;
+            }
+
+            #startBtn:disabled {
+                background-color: #a0aec0;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            #stopBtn {
+                background-color: #e53e3e;
+                color: #fff;
+            }
+
+            #clearBtn {
+                background-color: #ed8936;
+                color: #fff;
+            }
+
+            /* 统计信息 */
+            .count {
+                color: #4a5568;
+                font-size: 1rem;
+                margin-top: 10px;
+                font-weight: 500;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- 点名结果展示 -->
+            <div class="name-box" id="nameDisplay">
+                <br>？？？
+            </div>
+            <!-- 名单输入框 -->
+            <!-- 功能按钮 -->
+            <div class="btn-group">
+                <button id="startBtn">🎲 开始随机点名</button>
+<!--<input type="checkbox" id="aaa">不重复-->
+            </div>
+<div id="rrrr">
+剩余人数：<div id="rrrrr"></div>
+没点到：<div id="rrrrrr"></div>
+点到了：<div id="rrrrrrr"></div></div>
+            <!-- 人数统计 -->
+        </div>
+        <script>
+            // 获取DOM元素
+            const nameDisplay = document.getElementById('nameDisplay');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const countInfo = document.getElementById('countInfo');
+let aaa=document.location.search!=="?aaa";
+            let nameList = ['贺子腾', '王祎泽', '刘宣柘', '滕昊林', '张一弛', '杨建韬', '盛德仁', '尹钲桀', '卫博鸿', '李睿琦','秦子涵', '秦子谦', '刘皓梁', '张若琪', '魏可', '李沛珊', '李泽筱', '王泽萱', '王汝萱', '池浩正', '匡恒毅'];// 存储姓名数组
+            let rollInterval = null;
+            let rollSpeed = 20;
+if(aaa){
+let rrrr=document.getElementById("rrrr");
+let rrrrr=document.getElementById("rrrrr");
+let rrrrrr=document.getElementById("rrrrrr");
+let rrrrrrr=document.getElementById("rrrrrrr");}
+            // 2. 开始点名按钮点击事件
+            startBtn.addEventListener('click', startRoll);
+            var aa = false;
+
+let randomIndex=-1;
+let named=[];
+            function startRoll() {
+                if (aa == false) {
+                    aa = true;
+                    document.getElementById('startBtn').style.backgroundColor = "#e53e3e";
+                    document.getElementById('startBtn').innerHTML = "⏹️ 停止点名";
+                    rollInterval = setInterval( () => {
+                        randomIndex = Math.floor(Math.random() * nameList.length);
+                        nameDisplay.innerHTML = "<br>" + nameList[randomIndex];
+                    }
+                    , rollSpeed);
+                } else {
+                    // 清除定时器，停止滚动
+                    aa = false;
+                    document.getElementById('startBtn').style.backgroundColor = "#3182ce";
+                    document.getElementById('startBtn').innerHTML = "🎲 开始随机点名";
+                    clearInterval(rollInterval);
+                    rollInterval = null;
+                    // 按钮状态切换：启用开始、禁用停止
+                    // 停止后给结果加高亮提示
+                    nameDisplay.style.color = '#2b6cb0';
+if(aaa){
+let name2=[];named.push(nameDisplay.innerHTML.replace("<br>",""));
+nameList.forEach(function(o){if(o!==nameDisplay.innerHTML.replace("<br>","")){name2.push(o);}})
+nameList=name2;
+if(nameList.length<1){nameList = ['贺子腾', '王祎泽', '刘宣柘', '滕昊林', '张一弛', '杨建韬', '盛德仁', '尹钲桀', '卫博鸿', '李睿琦', '秦子涵', '秦子谦', '刘皓梁', '张若琪', '魏可', '李沛珊', '李泽筱', '王泽萱', '王汝萱', '池浩正', '匡恒毅'];named=[];}
+rrrrr.innerText=nameList.length;
+rrrrrr.innerText=nameList.join(", ");
+rrrrrrr.innerText=named.join(", ");
+}
+                    setTimeout( () => {
+                        nameDisplay.style.color = '#2b6cb0';
+                    }
+                    , 1000);
+                }
+            }
+        </script>
+    </body>
+</html>
